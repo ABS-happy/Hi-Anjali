@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap');
+
+:root {
+    --bg-color: #000000;
+    /* Black background */
+    --text-color: #ffffff;
+    /* White text for dark background */
+    --accent-red: #fa2323;
+    /* Vibrant Rose/Red */
+    --accent-blue: #1c7c98;
+    /* Vibrant Blue */
+    --accent-glow-red: rgba(250, 35, 35, 0.4);
+    --accent-glow-blue: rgba(28, 124, 152, 0.4);
+    --nav-bg: #000000;
+    --border-color: rgba(255, 255, 255, 0.05);
+    --btn-secondary-border: #475569;
+    --text-muted: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    /* Important during loader */
+    height: 100vh;
+}
+
+/* Loader Background that fades out */
+#loader-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 1000;
+    transition: opacity 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+body.loaded #loader-bg {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Animating Logo */
+#logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(200px, 30vw, 400px);
+    z-index: 1001;
+    /* Above loader bg in middle */
+    transition: all 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+    pointer-events: none;
+    /* Let clicks pass through if nav is under logo space */
+}
+
+/* Wait some time, then shrink and move to top-left */
+body.loaded #logo {
+    top: 25px;
+    left: 40px;
+    transform: translate(0, 0);
+    width: 60px;
+    z-index: 100;
+    /* Drop z-index to match nav level if needed */
+}
+
+/* Allow scrolling when loaded */
+body.loaded {
+    overflow-y: auto;
+}
+
+/* Main Content Area */
+#content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+    /* Start fading after logo moves */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.loaded #content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Nav Styles */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 40px;
+    background: var(--nav-bg);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99;
+}
+
+#nav-logo-placeholder {
+    width: 60px;
+    height: 60px;
+    /* To prevent layout jumps or nav shrinking */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.05rem;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: var(--accent-blue);
+    transition: width 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: var(--accent-red);
+}
+
+.nav-links li a:hover::after {
+    width: 100%;
+}
+
+/* Book Section */
+.book-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    padding: 20px;
+    perspective: 3000px;
+    height: calc(100vh - 100px);
+    overflow: hidden;
+}
+
+.book-container {
+    perspective: 3000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    width: 600px;
+    height: 600px;
+    cursor: grab;
+    z-index: 50;
+    touch-action: none;
+    /* Prevent browser scrolling while zooming/dragging */
+}
+
+.book-container:active {
+    cursor: grabbing;
+}
+
+.book-transform {
+    transform-style: preserve-3d;
+    transition: transform 0.1s linear;
+}
+
+.book-float {
+    transform-style: preserve-3d;
+    animation: floatBook 4s ease-in-out infinite;
+}
+
+@keyframes floatBook {
+    0% {
+        transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotateX(2deg) rotateY(1deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+    }
+}
+
+.book {
+    position: relative;
+    width: 350px;
+    height: 500px;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    border-radius: 5px;
+}
+
+.book.closed-front {
+    transform: translateX(0);
+}
+
+.book.opened {
+    transform: translateX(175px);
+}
+
+.book.closed-back {
+    transform: translateX(350px);
+}
+
+.book-cover-back-fixed {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('cover.png');
+    background-size: cover;
+    transform: translateZ(-30px) rotateY(180deg);
+    border-radius: 5px;
+    box-shadow: -20px -20px 40px rgba(0, 0, 0, 0.5);
+    backface-visibility: hidden;
+}
+
+.book-spine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 100%;
+    background-image: url('cover.png');
+    background-size: cover;
+    background-position: left center;
+    transform-origin: left;
+    transform: rotateY(-90deg);
+}
+
+.leaf {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), z-index 0s 0.3s;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.leaf.flipped {
+    transform: rotateY(-180deg);
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-color: #f1ebd8;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #c8a37f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.page.front {
+    transform: rotateY(0deg);
+}
+
+.page.back {
+    transform: rotateY(180deg);
+}
+
+.page-cover {
+    background-image: url('cover.png');
+    color: #ffd700;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    font-size: 3.5rem;
+    font-weight: bold;
+    font-family: 'Times New Roman', serif;
+    letter-spacing: 2px;
+}
+
+.page-paper {
+    background-image: url('paper.png');
+    color: #4a2c0f;
+    font-size: 2.5rem;
+    font-weight: 600;
+    font-family: 'Times New Roman', serif;
+    padding: 20px;
+    text-align: center;
+}
+
+.page-paper img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    object-fit: contain;
+}
+
+/* Floating Hearts Container */
+#hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+    /* Float above most things but below nav */
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+body.loaded #hearts-container {
+    opacity: 1;
+    /* Fade in hearts once site is loaded */
+}
+
+/* Individual Heart Styling */
+.heart {
+    position: absolute;
+    bottom: -15vh;
+    /* Start below the screen */
+    font-size: 1.5rem;
+    color: var(--accent-red);
+    opacity: 0;
+    animation: floatUp linear forwards;
+    /* Fill mode forwards so it stays gone when done */
+    text-shadow: 0px 0px 10px rgba(250, 35, 35, 0.4);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.8;
+    }
+
+    85% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-120vh) scale(1.5) rotate(360deg);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <meta name="description" content="Experience the future of digital solutions.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- The background loader that will fade out -->
+    <div id="loader-bg"></div>
+
+    <!-- The Logo that animates -->
+    <img src="AN.png" id="logo" alt="Logo">
+
+    <!-- Container for floating romantic hearts -->
+    <div id="hearts-container"></div>
+
+    <div id="content">
+        <nav>
+            <div id="nav-logo-placeholder"></div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="book-section">
+                <!-- Book Container -->
+                <div class="book-container" id="book-container">
+                    <div class="book-transform" id="book-transform">
+                        <div class="book-float">
+                            <div class="book closed-front" id="ancient-book">
+                                <div class="book-cover-back-fixed"></div>
+                                <div class="book-spine"></div>
+                                <!-- Leaves will be populated by script.js -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
