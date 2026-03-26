@@ -2,53 +2,1570 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <meta name="description" content="Experience the future of digital solutions.">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will you be my Valentine? 💕</title>
+  <!-- Book experience styles -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    :root {
+      --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      --yes-green: #4ade80;
+      --yes-green-hover: #22c55e;
+      --no-red: #ef4444;
+      --no-red-hover: #dc2626;
+      --text-dark: #374151;
+      --bg-card: rgba(255, 255, 255, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: var(--text-dark);
+      position: relative;
+    }
+
+    /* Floating Hearts Background */
+    .hearts-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      display: none;
+    }
+
+    .card {
+      background: var(--bg-card);
+      padding: 2.5rem 2rem;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 90%;
+      width: 450px;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      transition: all 0.5s ease;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      color: #e11d48;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Teddy emoji label above GIF */
+    #teddy-emoji {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+      transition: opacity 0.4s ease;
+    }
+
+    .gif-container {
+      margin-bottom: 1.5rem;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .gif-container img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      object-fit: contain;
+      /* Fade transition for GIF swap */
+      transition: opacity 0.35s ease;
+    }
+
+    /* Floating bob animation on the teddy */
+    .teddy-float {
+      animation: floatTeddy 3s ease-in-out infinite;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      min-height: 100px;
+      position: relative;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+    }
+
+    .btn-yes {
+      background-color: var(--yes-green);
+    }
+
+    .btn-yes:hover {
+      background-color: var(--yes-green-hover);
+      box-shadow: 0 0 15px var(--yes-green);
+      transform: scale(1.05);
+      /* Soft hover scale on its active size */
+    }
+
+    .btn-no {
+      background-color: var(--no-red);
+      position: relative;
+    }
+
+    .btn-no:hover {
+      background-color: var(--no-red-hover);
+    }
+
+    /* Celebration Screen */
+    .celebration-screen {
+      display: none;
+      text-align: center;
+      z-index: 10;
+      background: var(--bg-card);
+      padding: 3rem 2rem;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+      width: 500px;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .celebration-screen h1 {
+      font-size: 2.5rem;
+      color: #e11d48;
+      margin-bottom: 0.5rem;
+    }
+
+    .celebration-screen p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #fb7185;
+      font-weight: 600;
+    }
+
+    .btn-book {
+      background: linear-gradient(45deg, #f43f5e, #e11d48);
+      font-size: 1.3rem;
+      padding: 1rem 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-book:hover {
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
+      transform: scale(1.05);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal h2 {
+      color: #e11d48;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #fecdd3;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #f43f5e;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #f43f5e;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+
+    /* Final Message */
+    .final-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 3rem;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      z-index: 200;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      max-width: 90%;
+    }
+
+    .final-message h2 {
+      font-size: 2rem;
+      color: #e11d48;
+    }
+
+    /* Keyframes */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100px) scale(1.5) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Teddy gentle float bob */
+    @keyframes floatTeddy {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    /* Shake on NO click */
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-8px);
+      }
+
+      40% {
+        transform: translateX(8px);
+      }
+
+      60% {
+        transform: translateX(-6px);
+      }
+
+      80% {
+        transform: translateX(6px);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    .shake {
+      animation: shake 0.35s ease forwards !important;
+    }
+
+    .heart {
+      position: absolute;
+      color: #f43f5e;
+      font-size: 2rem;
+      animation: floatHeart 4s linear infinite;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #f00;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+      }
+    }
+
+    /* Dual celebration teddy layout */
+    .celebration-teddies {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 1.5rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .celebration-teddies img {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      border-radius: 16px;
+      animation: floatTeddy 2.5s ease-in-out infinite;
+    }
+
+    .celebration-teddies img:nth-child(2) {
+      /* Offset second bear so they bob alternately */
+      animation-delay: 0.6s;
+    }
+
+    /* ── Gift Transition Overlay ────────────────────────────────────────────── */
+    #giftTransition {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #ff9a9e, #fecfef);
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: background 2.5s ease, opacity 0.5s ease;
+    }
+
+    #giftTransition.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: #000;
+    }
+
+    /* Stars layer */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 55;
+      pointer-events: none;
+      overflow: hidden;
+      display: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--dur, 2s) ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.2;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.6);
+      }
+    }
+
+    /* Gift box */
+    #giftBox {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    #giftBox .gift-wrap {
+      position: relative;
+      cursor: pointer;
+      animation: scalePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+        floatGift 3s ease-in-out 0.7s infinite;
+      filter: drop-shadow(0 0 18px rgba(255, 100, 150, 0.7));
+    }
+
+    #giftBox .gift-wrap .gift-emoji {
+      font-size: 9rem;
+      display: block;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+
+    #giftBox .gift-wrap:hover .gift-emoji {
+      filter: brightness(1.2);
+    }
+
+    #giftBox .gift-lid {
+      position: absolute;
+      top: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 4rem;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    #giftBox .gift-label {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-shadow: 0 0 12px rgba(255, 150, 180, 0.9);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    #giftBox.opening .gift-lid {
+      transform: translateX(-50%) translateY(-60px) rotate(-30deg);
+      opacity: 0;
+    }
+
+    #giftBox.opening .gift-emoji {
+      animation: burstOpen 0.4s ease forwards;
+    }
+
+    /* Sparkles around gift */
+    .sparkle {
+      position: fixed;
+      font-size: 1.5rem;
+      pointer-events: none;
+      z-index: 65;
+      animation: sparkleFloat 1s ease-out forwards;
+    }
+
+    @keyframes sparkleFloat {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--sx), var(--sy)) scale(0.3);
+      }
+    }
+
+    /* Book / Date reveal section */
+    #bookSection {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(ellipse at center, #1a0033 0%, #000 100%);
+    }
+
+    #bookSection .book-card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 90%;
+      width: 460px;
+      box-shadow: 0 0 60px rgba(244, 63, 94, 0.3);
+      animation: revealCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    #bookSection .book-card h2 {
+      color: #f9a8d4;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #bookSection .book-card p {
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+
+    #bookSection .book-card .form-group label {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    #bookSection .book-card input,
+    #bookSection .book-card select {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(244, 63, 94, 0.5);
+      color: white;
+    }
+
+    #bookSection .book-card input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    #bookSection .book-card input:focus,
+    #bookSection .book-card select:focus {
+      border-color: #f43f5e;
+    }
+
+    #bookSection .book-card select option {
+      background: #1a0033;
+    }
+
+    #bookSection .book-card .btn-submit {
+      background: linear-gradient(45deg, #f43f5e, #a855f7);
+      font-size: 1.1rem;
+    }
+
+    #bookSection .book-card .btn-submit:hover {
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.7);
+    }
+
+    /* Date confirmed screen inside bookSection */
+    #dateConfirmed {
+      display: none;
+      color: white;
+    }
+
+    #dateConfirmed h2 {
+      font-size: 2rem;
+      color: #f9a8d4;
+      margin-bottom: 0.5rem;
+    }
+
+    #dateConfirmed p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    #dateConfirmed .big-emoji {
+      font-size: 5rem;
+      margin: 1rem 0;
+    }
+
+    /* ── Override #bookSection to fill screen (dark, full, centered) ── */
+    #bookSection {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: none;
+      /* shown by JS after gift opens */
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      /* pure black matches the book theme */
+      overflow: hidden;
+    }
+
+    /* Make the book-section inside fill the screen nicely */
+    #bookSection .book-section {
+      margin-top: 0;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .btn-gift {
+      background: linear-gradient(45deg, #f43f5e, #e11d48);
+      font-size: 1.3rem;
+      padding: 1rem 2rem;
+      margin-top: 1.5rem;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .btn-gift:hover {
+      box-shadow: 0 0 28px rgba(244, 63, 94, 0.8);
+      transform: scale(1.08);
+      animation-play-state: paused;
+      /* pause pulse on hover */
+    }
+
+    /* Keyframes for gift flow */
+    @keyframes scalePop {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      80% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes floatGift {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-18px);
+      }
+    }
+
+    @keyframes burstOpen {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.25);
+        filter: brightness(1.6);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 22px rgba(244, 63, 94, 0.85);
+      }
+    }
+
+    @keyframes revealCard {
+      0% {
+        opacity: 0;
+        transform: scale(0.7) translateY(40px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* ── 27-click unlock keyframes ─────────────────────────────────────────── */
+    /* Quick bounce on each click */
+    @keyframes bounceClick {
+      0% {
+        transform: scale(1);
+      }
+
+      40% {
+        transform: scale(1.13);
+      }
+
+      70% {
+        transform: scale(0.96);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Sideways shake */
+    @keyframes shakeBrief {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-7px);
+      }
+
+      50% {
+        transform: translateX(7px);
+      }
+
+      80% {
+        transform: translateX(-4px);
+      }
+    }
+
+    /* Glow ring flash */
+    @keyframes glowFlash {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 18px rgba(255, 100, 150, 0.7));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 48px rgba(255, 220, 80, 1));
+      }
+    }
+
+    /* Full-screen white flash on the 27th click */
+    @keyframes screenFlash {
+      0% {
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 0.85;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    #screenFlashEl {
+      position: fixed;
+      inset: 0;
+      background: white;
+      z-index: 200;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    #screenFlashEl.flash {
+      animation: screenFlash 0.7s ease forwards;
+    }
+  </style>
 </head>
 
 <body>
-    <!-- The background loader that will fade out -->
-    <div id="loader-bg"></div>
 
-    <!-- The Logo that animates -->
-    <img src="AN.png" id="logo" alt="Logo">
+  <!-- Storytelling Audio Assets -->
+  <audio id="intro-music" src="thousand_years.mp3" loop></audio>
+  <audio id="book-music" src="Gehra Hua (PenduJatt.Com.Se).mp3" loop></audio>
 
-    <!-- Container for floating romantic hearts -->
-    <div id="hearts-container"></div>
+  <div class="hearts-container" id="hearts-container"></div>
 
-    <div id="content">
-        <nav>
-            <div id="nav-logo-placeholder"></div>
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <section class="book-section">
-                <!-- Book Container -->
-                <div class="book-container" id="book-container">
-                    <div class="book-transform" id="book-transform">
-                        <div class="book-float">
-                            <div class="book closed-front" id="ancient-book">
-                                <div class="book-cover-back-fixed"></div>
-                                <div class="book-spine"></div>
-                                <!-- Leaves will be populated by script.js -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+  <!-- Proposal UI -->
+  <div class="card" id="proposal-card">
+    <h1 id="question">🧸 Will you be my Valentine? 💕</h1>
+    <div class="gif-container">
+      <!-- Step 0: happy/shy bubu — same kawaii mochi style as all NO-click states -->
+      <img id="teddy" src="https://media.tenor.com/9bn_EpSg5KoAAAAM/happy.gif" alt="Bubu happy" class="teddy-float">
     </div>
+    <div class="buttons" id="buttons-container">
+      <button class="btn-yes" id="btn-yes">Yes 💚</button>
+      <button class="btn-no" id="btn-no">No</button>
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- Celebration UI (YES page) — verified bubu-dudu celebration GIFs -->
+  <div class="celebration-screen" id="celebration-screen">
+    <h1>🧸❤️🧸 Finally!!!</h1>
+    <p>You made me the happiest person 🥹💖</p>
+    <div class="celebration-teddies">
+      <!-- Bubu bride / wedding celebration -->
+      <img id="celeb-gif-1" src="https://media.tenor.com/WHc5Ev8K4AoAAAAM/bubu-dudu-bride.gif"
+        alt="Bubu bride celebrating">
+      <!-- Bubu & Dudu dancing together -->
+      <img id="celeb-gif-2" src="https://media.tenor.com/W37fJCYOM74AAAAM/bubu-dancing-dance.gif" alt="Bubu dancing">
+    </div>
+    <!-- Changed: was "Plan Our Date", now triggers Gift flow -->
+    <button class="btn-gift" id="btn-gift">Want a Gift? 🎁</button>
+  </div>
+
+  <!-- Gift Transition dark overlay -->
+  <div id="giftTransition"></div>
+
+  <!-- Stars container (replaces hearts in dark mode) -->
+  <div id="stars"></div>
+
+  <!-- Gift Box screen -->
+  <div id="giftBox">
+    <div class="gift-wrap" id="giftWrap">
+      <span class="gift-emoji">🎁</span>
+    </div>
+  </div>
+
+  <!-- Full-screen white flash element (for 27th click cinematic) -->
+  <div id="screenFlashEl"></div>
+
+  <!-- Book revealed after gift opens (same book as script.js / style.css) -->
+  <div id="bookSection">
+    <!-- Hearts from the original book experience -->
+    <div id="hearts-container-book"></div>
+    <!-- Book scaffold (leaves injected by initBook()) -->
+    <section class="book-section">
+      <div class="book-container" id="book-container">
+        <div class="book-transform" id="book-transform">
+          <div class="book-float">
+            <div class="book closed-front" id="ancient-book">
+              <div class="book-cover-back-fixed"></div>
+              <div class="book-spine"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+
+  <script>
+    // ── DOM References ──────────────────────────────────────────────────────────
+    const proposalCard = document.getElementById('proposal-card');
+    const celebrationScreen = document.getElementById('celebration-screen');
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo = document.getElementById('btn-no');
+    const btnGift = document.getElementById('btn-gift');       // NEW
+    const giftTransition = document.getElementById('giftTransition'); // NEW
+    const starsEl = document.getElementById('stars');          // NEW
+    const giftBoxEl = document.getElementById('giftBox');        // NEW
+    const giftWrap = document.getElementById('giftWrap');       // NEW
+    const bookSection = document.getElementById('bookSection');    // NEW
+    const heartsContainer = document.getElementById('hearts-container');
+    const teddyEl = document.getElementById('teddy');
+    const introMusic = document.getElementById('intro-music');
+    const bookMusic = document.getElementById('book-music');
+    let introStarted = false;
+    const questionEl = document.getElementById('question');
+
+    // ── Teddy State Data (Bubu & Dudu — verified kawaii mochi style) ───────────────────
+    // Index 0 = initial happy state (proposal page, step 0)
+    // Indices 1–9 = NO progression: neutral → confused → sad → crying → devastated
+    // All characters are the same Bubu/Dudu white chubby kawaii panda style ✓
+    const teddyStates = [
+      // [0] Happy/shy — initial proposal page state
+      {
+        gif: "https://media.tenor.com/9bn_EpSg5KoAAAAM/happy.gif",
+        emoji: "🧸🙂"
+      },
+      // [1] Happy with hearts — first NO (still hopeful)
+      {
+        gif: "https://media.tenor.com/4K9ZXuExtoMAAAAM/hearts-heart-beat.gif",
+        emoji: "🧸🙂"
+      },
+      // [2] Confused/huh — slightly worried
+      {
+        gif: "https://media.tenor.com/UtMNx2yDPkMAAAAM/bubu-confused-bubu-huh.gif",
+        emoji: "🧸😕"
+      },
+      // [3] "Wat" — puzzled/disbelief
+      {
+        gif: "https://media.tenor.com/w06oiiEwivIAAAAM/bubu-wat.gif",
+        emoji: "🧸🤔"
+      },
+      // [4] Sad pouty — first real sadness
+      {
+        gif: "https://media.tenor.com/i795mJFL_YoAAAAM/bubu-dudu.gif",
+        emoji: "🧸😢"
+      },
+      // [5] Teary/drooping — deeper sadness
+      {
+        gif: "https://media.tenor.com/WBY39furrxQAAAAM/bubu-dudu-sseeyall.gif",
+        emoji: "🧸😢"
+      },
+      // [6] Crying (bubu sad) — openly crying
+      {
+        gif: "https://media.tenor.com/JxUtcWwYvRAAAAAM/bubu-bubu-sad.gif",
+        emoji: "🧸😭"
+      },
+      // [7] Heavy crying — both crying
+      {
+        gif: "https://media.tenor.com/TPoDvi7IeQ0AAAAM/bubu-sad-bubu-dudu.gif",
+        emoji: "🧸😭"
+      },
+      // [8] Heartbroken/devastated
+      {
+        gif: "https://media.tenor.com/D0VCJPObojUAAAAM/bubu-sad-dudu.gif",
+        emoji: "🧸💔"
+      },
+      // [9] Begging/pleading — max state (NO button runs away)
+      {
+        gif: "https://media.tenor.com/BPVM2xECVBQAAAAM/please.gif",
+        emoji: "🧸😭💔"
+      }
+    ];
+
+    // Celebration GIFs: bride + dancing — same Bubu/Dudu style (set in HTML)
+    const celebrationGifs = [
+      "https://media.tenor.com/WHc5Ev8K4AoAAAAM/bubu-dudu-bride.gif",
+      "https://media.tenor.com/W37fJCYOM74AAAAM/bubu-dancing-dance.gif"
+    ];
+
+    // ── Preload all GIFs for smooth lag-free experience ────────────────────────────
+    const allGifs = teddyStates.map(t => t.gif).concat(celebrationGifs);
+    allGifs.forEach(src => { const img = new Image(); img.src = src; });
+
+    // ── App State ────────────────────────────────────────────────────────────────
+    // step 0 = proposal (teddyStates[0] = happy bubu shown)
+    // step 1–9 = each NO click maps to teddyStates[1..9] (progressively sadder)
+    let step = 0;
+    const maxSteps = 9;
+
+    const noTexts = [
+      "Are you sure? 🥺",
+      "Think again 💔",
+      "Please 😭",
+      "Don't do this 🥹",
+      "Last chance 😢",
+      "I'll be sad 💔",
+      "Really sure? 😭",
+      "Please say yes 🥺",
+      "Final chance 😢",
+      "You're breaking my heart..."
+    ];
+
+    // ── Helper: fade-swap teddy GIF ──────────────────────────────────────────────
+    function swapTeddy(newSrc) {
+      teddyEl.style.opacity = '0';                     // fade out
+      setTimeout(() => {
+        teddyEl.src = newSrc;                           // swap src while invisible
+        teddyEl.style.opacity = '1';                   // fade back in
+      }, 350);
+    }
+
+    // ── Helper: shake the teddy card on NO ──────────────────────────────────────
+    function shakeTeddy() {
+      teddyEl.classList.remove('shake');
+      // Force reflow so animation restarts even on repeated clicks
+      void teddyEl.offsetWidth;
+      teddyEl.classList.add('shake');
+      teddyEl.addEventListener('animationend', () => teddyEl.classList.remove('shake'), { once: true });
+    }
+
+    // ── Intro Music Auto-play ────────────────────────────────────────────────
+    document.body.addEventListener('click', () => {
+      if (!introStarted) {
+        introStarted = true;
+        introMusic.play().catch(e => console.log("Intro audio blocked:", e));
+      }
+    }, { once: true });
+
+    // ── NO Button Logic ───────────────────────────────────────────────────────────
+    btnNo.addEventListener('click', () => {
+      if (step < maxSteps) {
+        step++;
+        shakeTeddy();
+
+        // 2. Cross-fade to the sadder GIF state
+        swapTeddy(teddyStates[step].gif);
+
+        // 3. Update heading emoji prefix
+        questionEl.textContent = teddyStates[step].emoji + " Will you be my Valentine? 💕";
+
+        // 4. Update NO button text
+        btnNo.textContent = noTexts[Math.min(step - 1, noTexts.length - 1)];
+
+        // 5. Shrink NO, grow YES progressively
+        const scaleNo = Math.max(1 - (step * 0.08), 0);
+        btnNo.style.transform = `scale(${scaleNo})`;
+
+        const newFontSize = 1.1 + (step * 0.3);
+        const newPaddingV = 0.8 + (step * 0.3);
+        const newPaddingH = 1.5 + (step * 0.4);
+        btnYes.style.fontSize = `${newFontSize}rem`;
+        btnYes.style.padding = `${newPaddingV}rem ${newPaddingH}rem`;
+
+        // 6. At max step: NO button runs away on hover / touch
+        if (step === maxSteps) {
+          btnNo.style.position = 'absolute';
+          btnNo.style.pointerEvents = 'none';
+          setTimeout(() => {
+            btnNo.style.pointerEvents = 'auto';
+            btnNo.addEventListener('mouseover', moveNoButton);
+            btnNo.addEventListener('touchstart', moveNoButton);
+          }, 300);
+        }
+      }
+    });
+
+    // Move NO button away from cursor
+    function moveNoButton() {
+      const x = Math.random() * (window.innerWidth - btnNo.offsetWidth) - (window.innerWidth / 2);
+      const y = Math.random() * (window.innerHeight - btnNo.offsetHeight) - (window.innerHeight / 2);
+      btnNo.style.position = 'fixed';
+      const endScale = Math.max(1 - (maxSteps * 0.08), 0);
+      btnNo.style.transform = `translate(${x}px, ${y}px) scale(${endScale})`;
+      btnNo.style.zIndex = '9999';
+    }
+
+    // ── YES Button Behavior ───────────────────────────────────────────────────
+    btnYes.addEventListener('click', (e) => {
+      e.stopPropagation(); // Avoid event collision if needed
+      proposalCard.style.display = 'none';
+      if (btnNo.style.position === 'fixed') btnNo.style.display = 'none';
+      celebrationScreen.style.display = 'block';
+      createConfetti();
+      startFloatingHearts();
+    });
+
+    // ── "Want a Gift?" → Gift Flow ────────────────────────────────────────────
+    btnGift.addEventListener('click', () => {
+      // 1. STOP Initial Music
+      introMusic.pause();
+      introMusic.currentTime = 0;
+
+      // 1. Fade in the dark overlay (pink → black transition via CSS)
+      giftTransition.style.opacity = '0';
+      giftTransition.style.background = 'linear-gradient(135deg,#ff9a9e,#fecfef)';
+      giftTransition.style.pointerEvents = 'auto';
+      requestAnimationFrame(() => {
+        giftTransition.style.transition = 'opacity 0.6s ease, background 2.5s ease';
+        giftTransition.style.opacity = '1';
+        giftTransition.style.background = '#000';
+      });
+
+      // 2. Fade hearts out immediately
+      heartsContainer.style.transition = 'opacity 0.8s ease';
+      heartsContainer.style.opacity = '0';
+      setTimeout(() => { heartsContainer.style.display = 'none'; }, 800);
+
+      // 3. Fade celebration screen out
+      celebrationScreen.style.transition = 'opacity 0.5s ease';
+      celebrationScreen.style.opacity = '0';
+      setTimeout(() => { celebrationScreen.style.display = 'none'; }, 500);
+
+      // 4. After dark background settles → show stars
+      setTimeout(() => {
+        starsEl.style.display = 'block';
+        createStars(120);
+      }, 1800);
+
+      // 5. After background is fully dark → show gift box
+      setTimeout(() => {
+        giftBoxEl.style.display = 'flex';
+      }, 2600);
+    });
+
+    // ── Gift Box — 27-Click Hidden Unlock System ──────────────────────────────
+    const UNLOCK_CLICKS = 27;
+    let clickCount = 0;
+    let giftOpened = false;
+    const screenFlashEl = document.getElementById('screenFlashEl');
+
+    giftWrap.addEventListener('click', () => {
+      if (giftOpened) return;
+      clickCount++;
+
+      if (clickCount < UNLOCK_CLICKS) {
+        // ── Pre-unlock feedback ───────────────────────────────────────────────
+
+        // 1. Quick bounce + shake on the gift emoji
+        const emoji = giftWrap.querySelector('.gift-emoji');
+        emoji.style.animation = 'none';
+        void emoji.offsetWidth; // force reflow
+        emoji.style.animation = 'bounceClick 0.3s ease, shakeBrief 0.3s ease';
+
+        // 2. Glow flash on wrap (escalates every 5 clicks)
+        const tier = Math.floor(clickCount / 5); // 0-4
+        const glowDuration = Math.max(0.25 - tier * 0.03, 0.1);
+        giftWrap.style.animation =
+          `scalePop 0s, floatGift ${Math.max(3 - tier * 0.3, 1.5)}s ease-in-out 0s infinite, glowFlash ${glowDuration}s ease`;
+
+        // 3. Small sparks on each click (fewer than the final burst)
+        const rect = giftWrap.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const sparkEmojis = ['✦', '·', '*', '•', '+']; // subtle mini sparks
+        const count = 3 + tier * 2; // more sparks as tiers increase
+        for (let i = 0; i < count; i++) {
+          const sp = document.createElement('span');
+          sp.classList.add('sparkle');
+          sp.textContent = sparkEmojis[Math.floor(Math.random() * sparkEmojis.length)];
+          sp.style.color = `hsl(${Math.random() * 60 + 330}, 100%, 75%)`;
+          sp.style.fontSize = '1rem';
+          const angle = Math.random() * 2 * Math.PI;
+          const dist = 30 + Math.random() * 50;
+          sp.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
+          sp.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
+          sp.style.left = cx + 'px';
+          sp.style.top = cy + 'px';
+          sp.style.animationDuration = (0.4 + Math.random() * 0.3).toFixed(2) + 's';
+          document.body.appendChild(sp);
+          setTimeout(() => sp.remove(), 800);
+        }
+
+      } else {
+        // ── 27th click: cinematic opening sequence ────────────────────────────
+        giftOpened = true;
+
+        // Step 1: Screen white flash
+        screenFlashEl.classList.remove('flash');
+        void screenFlashEl.offsetWidth; // reflow
+        screenFlashEl.classList.add('flash');
+
+        // Step 2: Gift opening animations
+        giftBoxEl.classList.add('opening'); // lid flies off via existing CSS
+        createSparkles(giftWrap);           // big sparkle burst
+
+        // Step 3: Fade gift box out → show book
+        setTimeout(() => {
+          giftBoxEl.style.transition = 'opacity 0.6s ease';
+          giftBoxEl.style.opacity = '0';
+          starsEl.style.transition = 'opacity 0.6s ease';
+          starsEl.style.opacity = '0.4';
+        }, 700);
+
+        setTimeout(() => {
+          giftBoxEl.style.display = 'none';
+          bookSection.style.display = 'flex';
+
+          // START Book Music
+          bookMusic.play().catch(e => console.log("Book audio blocked:", e));
+
+          // Initialize the 3D book experience once the section is visible
+          if (!window._bookInited) { window._bookInited = true; initBook(); }
+        }, 1350);
+      }
+    });
+
+    // ── Stars Generator ──────────────────────────────────────────────────────
+    function createStars(count) {
+      starsEl.innerHTML = ''; // clear any old stars
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        const dur = (1 + Math.random() * 2).toFixed(2) + 's';
+        const size = (2 + Math.random() * 3).toFixed(1) + 'px';
+        star.style.setProperty('--dur', dur);
+        star.style.width = size;
+        star.style.height = size;
+        star.style.left = (Math.random() * 100) + 'vw';
+        star.style.top = (Math.random() * 100) + 'vh';
+        star.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
+        starsEl.appendChild(star);
+      }
+    }
+
+    // ── Sparkle Burst on Gift Open ────────────────────────────────────────────
+    function createSparkles(originEl) {
+      const rect = originEl.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const emojis = ['✨', '⭐', '💫', '🌟', '💖', '🎉', '🎊'];
+
+      for (let i = 0; i < 18; i++) {
+        const sp = document.createElement('span');
+        sp.classList.add('sparkle');
+        sp.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+        const angle = Math.random() * 2 * Math.PI;
+        const dist = 80 + Math.random() * 120;
+        sp.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
+        sp.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
+        sp.style.left = cx + 'px';
+        sp.style.top = cy + 'px';
+        sp.style.animationDelay = (Math.random() * 0.3).toFixed(2) + 's';
+        sp.style.animationDuration = (0.6 + Math.random() * 0.5).toFixed(2) + 's';
+        document.body.appendChild(sp);
+        setTimeout(() => sp.remove(), 1200);
+      }
+    }
+
+    // Confetti generation utility
+    function createConfetti() {
+      const colors = ['#f43f5e', '#ec4899', '#d946ef', '#a855f7', '#3b82f6', '#4ade80', '#fbbf24'];
+      for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        const startX = Math.random() * window.innerWidth;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const delay = Math.random() * 3;
+        confetti.style.left = `${startX}px`;
+        confetti.style.top = `-20px`;
+        confetti.style.backgroundColor = color;
+        confetti.style.animationDelay = `${delay}s`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000 + delay * 1000);
+      }
+    }
+
+    // Floating Hearts generation utility
+    function startFloatingHearts() {
+      heartsContainer.style.display = 'block';
+      heartsContainer.style.opacity = '1';
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        const left = Math.random() * 100;
+        const duration = 3 + Math.random() * 3;
+        const size = 1 + Math.random() * 2;
+        heart.style.left = `${left}vw`;
+        heart.style.animationDuration = `${duration}s`;
+        heart.style.fontSize = `${size}rem`;
+        heartsContainer.appendChild(heart);
+        setTimeout(() => heart.remove(), duration * 1000);
+      }, 400);
+    }
+    // ── initBook: Enhanced multi-page interactive book ─────────────────────────
+    function initBook() {
+      const book = document.getElementById('ancient-book');
+      const bookTransform = document.getElementById('book-transform');
+      const bookContainer = document.getElementById('book-container');
+      if (!book) return;
+
+      // Month data: 12 beautiful love letters (Month 1 = January → Month 12 = December)
+      const monthLetters = [
+        {
+          title: 'The Beginning 💫',
+          body: `Apka match mai harna aur seven mai party dena...aye haye...
+The hurry i had to choose the right bus for some reason and after putting everyone names on the page i rush back to the bus and thats when i saw u in black and white zebra dress. irush back and sat on window side looking u from behind. And the truck journey, and the urge to sit beside u was the exciting thing happen to me and then rest is history. 
+the anger and dissapointment when u left me to take bus and did not even look back.
+wtaching Chawa in theatre and i stop your hand since u were rubbing your eye and then u put your head in my shoulder and that stopping of hand turn into holding of hand and m still holding and i will remain holdig it forever.`
+        },
+        {
+          title: 'hi sweetheart',
+          body: `Yeah our rumors started in our college and everyone started noticing us together. But at least we tried hiding. Yeah it was a shook to know abt ur bad dreams it really put my heart to sink but i never thought to rethink about our relationship or my decision cuz i know u were naive and bholi bhali ladki. 
+slowly and slowly we keep getting closure to each other and guess what before even end of our 1st month together we did our first kiss and our processs(it true that i was vi*gin before you) no words can describe the beauty and experience of that day in bedroom together. thats when i decided that i only want u and only u for our process always.
+promise to kiss, hug, cuddle and ofc to have our process with u n only u`
+        },
+        {
+          title: 'hi sweeta',
+          body: `yes we now keep getting closure by taking and understanding together. Keep telling all about our familes and all our past histories.
+we found library our spot when i first started using my fingure on you by playing subwaysuffer and then in BUS and then i got chance to eat the valley...wow that was awesome as i keep licking the hot vanilla i keep getting addicted to u. i realised that u r my "personal brand of heroiene". 
+And then u made me your baby by giving me " dhu dhu", my favourite thing which i never say no to. and i will prefer to serve me this always as food. That when u got the title "ABS favourite food" and u climb top on my list of taste. 
+i promise to eat with you as well as eat u always.`
+        },
+        {
+          title: 'hi darling',
+          body: `i was nowinh u went through a lot and hoping and believeing in god that there will be something or some miracle should happen that will take u out from that downfall of yours. guess what that happened when u came from maha kumbh. pata nai kitni sidhhat se manga tha apne bhagwan ji se jo esa miracle dekhne mila. ofc apko prove karna para 32 exams deke but u did it. 
+i am really really proud of you my girl, i want you to keep believing in yourself and god to achieve yours as well as our goals together.
+By seeing that power and miracle we should definetly 
+promise together to bring Ganpati bappa to our own home after our marriage every year.`
+        },
+        {
+          title: 'hi princess',
+          body: `yes mcd where i saw u weairng white and siting quitely and wow looking like a princess is waiting for her prince. 
+U definetly are my princess and the way u enterned in my life and changing me completly by giving me hope that if i can think then i can definelty achieve it and u yourself are an example for me and to be frank my role model. 
+that the reason why i promise to always keep improving myself to achieve my as well as our goals together.`
+        },
+        {
+          title: 'hi cutu',
+          body: `now comes the time when bhaiya found out about our gutur gu and that when i lift u up in my hand infront of him in ganpati puja. i know u wanted to spent whole nigtht together but i went back home. That day was officially the day when we showed everyone about our relationship.
+i promise to always hold you take  careof u like a baby to my fullest potential.`
+        },
+        {
+          title: 'hi baby',
+          body: `we bought our diary AA and we went to Drone expo where everyone were doing theri thing and we were roaming together haye wo black dress appe jo jachta hai. 
+yes our six months completed and u handed me 6 letters ayeee hayeee. those letters are not just papers but you love, dedication, hardwork, loyalty, faith and believe in me. Yeah its true that i am copying your idea and writing you this letters just to tell you that ek pagal hai apke piche.
+i am just a boy standing in front of a girl and asking her to love him`
+        },
+        {
+          title: 'hi babe',
+          body: `thats precioud 7 number in AUg thets when my girl born and we go for pizzas...now comes the the video call era of us when after examination holidays started and we started talking to each, taking cute, funny screen shots of each other and saving it. Yours expressions were so cute just like a cute lil baby.
+And when u flash mountains, dhudhu and valley offfff. i turned on during every video call with you.
+u r the my miracle girl`
+        },
+        {
+          title: 'hi shona',
+          body: `Our VC continued, and i must say thanku to VC that i saw all the expressions of yours and when you went in some marriage ceremony and sent me thode saree, lehenga and that yellwo colourd dress photo aye hayeee...i kept looking that photos again and again cuz mujhe hakk haiiii..
+i like the way we solved every misunderstandings before sleeping, talking every things. 
+AND AND our 31 dec 2025 - 1 jan 2026 together...hayeeee...`
+        },
+        {
+          title: 'hi jannu',
+          body: `Our holidays completed and we celebrated that days of our college Zephyre2026 together and saw you play sports in that hot jursey abd that pant, saw your light pink saree and that curves or yours and that black dress photo i took at mcd and our lift kisses...cutness overloaded. ANd not to forget how we used those january starting college together before my roommate came...
+the traditional, sporty, and fashonale looks of yours,,, kya kehna majja agaya bas.`
+        },
+        {
+          title: 'hi wife',
+          body: `this is the not the letter its the 7 promises that i am giving 
+
+1. तीर्थव्रतोद्यापन यज्ञकर्म मया सहैव प्रियवयं कुर्या:
+वामांगमायामि तदा त्वदीयं ब्रवीति वाक्यं प्रथमं कुमारी!।
+2. पुज्यो यथा स्वौ पितरौ ममापि तथेशभक्तो निजकर्म कुर्या:
+वामांगमायामि तदा त्वदीयं ब्रवीति कन्या वचनं द्वितीयम!!
+3. जीवनम अवस्थात्रये पालनां कुर्यात
+वामांगंयामितदा त्वदीयं ब्रवीति कन्या वचनं तृतीयं!!
+4. कुटुम्बसंपालनसर्वकार्य कर्तु प्रतिज्ञां यदि कातं कुर्या:
+वामांगमायामि तदा त्वदीयं ब्रवीति कन्या वचनं चतुर्थ:।।
+5. स्वसद्यकार्ये व्यहारकर्मण्ये व्यये मामापि मन्‍त्रयेथा
+वामांगमायामि तदा त्वदीयं ब्रूते वच: पंचमत्र कन्या!!
+6. न मेपमानमं सविधे सखीना द्यूतं न वा दुर्व्यसनं भंजश्वेत
+वामाम्गमायामि तदा त्वदीयं ब्रवीति कन्या वचनं च षष्ठम!!
+7. परस्त्रियं मातूसमां समीक्ष्य स्नेहं सदा चेन्मयि कान्त कूर्या।
+वामांगमायामि तदा त्वदीयं ब्रूते वच: सप्तमंत्र कन्या!!`
+        },
+        {
+          title: 'Hi humar kaleja',
+          body: `I know pata bhi nai chala kaise ye 1 saal bit gaya lagta hai ek hi din toh huwa hai, jis tarah hum ye 1 saal sath bitaye aur humara pyaar itna strong huwa hai, bhagwan se yehi winti hai ki esehi aur pyaar badhte rahe humara, hum hamesha khus rahe, ek sath rahe humare sare sapne pure kare, cute si family banaye hum, acche mata pita bane, acche beta beti bane apne parents ke liye aur acche insaan bane aur bahut paisa kamaye aur bahut si logo ki madat kare, nature ki madat kare...
+
+I LOVE YOU MY WIFE ❤️ `
+        }
+      ];
+
+      // Total leaves: 1 (cover) + 1 (Ganpati) + 12 (letters) + 1 (Radha Krishna) = 15
+      const numLeaves = 15;
+      let currentLeaf = 0;
+      const thickness = 2;
+      const leaves = [];
+
+      for (let i = 0; i < numLeaves; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        leaf.style.zIndex = numLeaves - i;
+
+        const zClosed = -i * thickness;
+        const zFlipped = -(numLeaves - 1 - i) * thickness;
+        leaf.style.transform = `translateZ(${zClosed}px) rotateY(0deg)`;
+
+        const front = document.createElement('div');
+        front.className = 'page front';
+        const back = document.createElement('div');
+        back.className = 'page back page-paper';
+
+        // ── Leaf 0: Front Cover / Inner Cover ──────────────────────────────────
+        if (i === 0) {
+          front.className = 'page front page-cover';
+          back.className = 'page back page-cover-inner';
+        }
+
+        // ── Leaf 1: Ganpati Blessing Page ──────────────────────────────────────
+        else if (i === 1) {
+          front.className = 'page front page-ganpati';
+          front.innerHTML = `
+            <div class="ganpati-wrapper">
+              <div class="ganpati-glow-ring"></div>
+              <img src="ganpati.png" alt="Ganpati Bappa" class="ganpati-img">
+            </div>`;
+          back.className = 'page back page-paper';
+          back.innerHTML = '';
+        }
+
+        // ── Leaves 2–13: Monthly Letter Pages ──────────────────────────────────
+        else if (i >= 2 && i <= 13) {
+          const letter = monthLetters[i - 2]; // i=2 → Month 1, i=13 → Month 12
+          const pageNum = i - 1;              // display page 1–12
+          front.className = 'page front page-paper page-letter';
+          front.innerHTML = `
+            <div class="letter-inner">
+              <h2 class="letter-title">${letter.title}</h2>
+              <div class="letter-divider">— ❤ —</div>
+              <p class="letter-body">${letter.body.replace(/\n/g, '<br>')}</p>
+              <span class="page-number">${pageNum}</span>
+            </div>`;
+          back.className = 'page back page-paper';
+          back.innerHTML = '';
+        }
+
+        // ── Leaf 14: Radha Krishna Ending Page / Back Cover ────────────────────
+        else if (i === 14) {
+          front.className = 'page front page-radha-krishna';
+          front.innerHTML = `
+            <div class="rk-wrapper">
+              <div class="rk-aura-outer"></div>
+              <div class="rk-aura-inner"></div>
+              <img src="radhakrishna.png" alt="Radha Krishna" class="rk-img">
+            </div>`;
+          back.className = 'page back page-cover-back';
+        }
+
+        leaf.appendChild(front);
+        leaf.appendChild(back);
+        book.appendChild(leaf);
+        leaves.push({ leaf, zClosed, zFlipped, i });
+      }
+
+      // ── Hint overlay (tap left / right) ──────────────────────────────────────
+      const hint = document.createElement('div');
+      hint.id = 'book-hint';
+      hint.innerHTML = `
+        <span class="hint-arrow hint-left">‹ Prev</span>
+        <span class="hint-label">tap to turn page</span>
+        <span class="hint-arrow hint-right">Next ›</span>`;
+      bookContainer.appendChild(hint);
+      // Auto-hide hint after first flip
+      let hintHidden = false;
+      function hideHint() {
+        if (hintHidden) return;
+        hintHidden = true;
+        hint.style.opacity = '0';
+        setTimeout(() => hint.remove(), 600);
+      }
+
+      // ── updateBookPosition ────────────────────────────────────────────────────
+      function updateBookPosition() {
+        if (currentLeaf === 0) book.className = 'book closed-front';
+        else if (currentLeaf === numLeaves) book.className = 'book closed-back';
+        else book.className = 'book opened';
+      }
+
+      // ── Flip helpers ──────────────────────────────────────────────────────────
+      function flipForward() {
+        if (currentLeaf >= numLeaves) return;
+        const { leaf, zFlipped, i } = leaves[currentLeaf];
+        leaf.classList.add('flipped');
+        leaf.style.zIndex = i + 1;
+        leaf.style.transform = `translateZ(${zFlipped}px) rotateY(-180deg)`;
+        currentLeaf++;
+        updateBookPosition();
+        hideHint();
+      }
+      function flipBack() {
+        if (currentLeaf <= 0) return;
+        const { leaf, zClosed, i } = leaves[currentLeaf - 1];
+        leaf.classList.remove('flipped');
+        leaf.style.zIndex = numLeaves - i;
+        leaf.style.transform = `translateZ(${zClosed}px) rotateY(0deg)`;
+        currentLeaf--;
+        updateBookPosition();
+        hideHint();
+      }
+
+      // ── Pointer: click right half → forward, click left half → backward ───────
+      let clickStartX = 0, clickStartY = 0, clickMoved = false;
+
+      bookContainer.addEventListener('pointerdown', e => {
+        clickStartX = e.clientX;
+        clickStartY = e.clientY;
+        clickMoved = false;
+      });
+      bookContainer.addEventListener('pointermove', e => {
+        if (Math.abs(e.clientX - clickStartX) > 8 ||
+          Math.abs(e.clientY - clickStartY) > 8) {
+          clickMoved = true;
+        }
+      });
+      bookContainer.addEventListener('pointerup', e => {
+        if (clickMoved) return;
+        const rect = bookContainer.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        if (e.clientX > centerX) flipForward();
+        else flipBack();
+      });
+
+      // ── Touch swipe support ────────────────────────────────────────────────────
+      let touchStartX = 0, touchStartY = 0;
+      bookContainer.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+      }, { passive: true });
+      bookContainer.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return; // not a real swipe
+        if (Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0) flipForward();  // swipe left → next
+          else flipBack();     // swipe right → prev
+        }
+      }, { passive: true });
+
+      // ── Keyboard support ──────────────────────────────────────────────────────
+      document.addEventListener('keydown', e => {
+        if (bookSection.style.display === 'flex') {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') flipForward();
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') flipBack();
+        }
+      });
+
+      // ── 360° drag rotation ────────────────────────────────────────────────────
+      let isDragging = false, dragStartX = 0, dragStartY = 0;
+      let currentRotX = 5, currentRotY = 0, currentScale = 1;
+      if (bookTransform)
+        bookTransform.style.transform = `scale(${currentScale}) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+
+      document.addEventListener('pointerdown', e => { isDragging = true; dragStartX = e.clientX; dragStartY = e.clientY; });
+      document.addEventListener('pointermove', e => {
+        if (!isDragging || !bookTransform) return;
+        currentRotY += (e.clientX - dragStartX) * 0.4;
+        currentRotX -= (e.clientY - dragStartY) * 0.4;
+        dragStartX = e.clientX; dragStartY = e.clientY;
+        bookTransform.style.transform = `scale(${currentScale}) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+      });
+      document.addEventListener('pointerup', () => { isDragging = false; });
+
+      if (bookContainer) {
+        bookContainer.addEventListener('wheel', e => {
+          e.preventDefault();
+          currentScale = Math.min(Math.max(0.4, currentScale + e.deltaY * -0.001), 3.5);
+          bookTransform.style.transform = `scale(${currentScale}) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+        }, { passive: false });
+
+        let zoomToggled = false;
+        bookContainer.addEventListener('dblclick', () => {
+          zoomToggled = !zoomToggled;
+          currentScale = zoomToggled ? 2.5 : 1;
+          bookTransform.style.transform = `scale(${currentScale}) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+          bookTransform.style.transition = 'transform 0.3s ease';
+          setTimeout(() => { bookTransform.style.transition = 'transform 0.1s linear'; }, 300);
+        });
+      }
+    }
+  </script>
 </body>
 
 </html>

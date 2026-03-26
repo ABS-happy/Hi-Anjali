@@ -115,7 +115,9 @@ function initBook() {
 
         if (i === 0) {
             front.className = 'page front page-cover';
-            front.innerHTML = '<div>A&amp;A</div>';
+            front.innerHTML = '';
+            back.className = 'page back page-cover-inner';
+            back.innerHTML = '';
         } else if (i === 1) {
             front.className = 'page front page-paper';
             front.innerHTML = '<img src="ganpati.png" alt="Ganpati Bappa">';
@@ -126,7 +128,7 @@ function initBook() {
             front.className = 'page front page-paper';
             front.innerHTML = '<h1>Thank You</h1>';
 
-            back.className = 'page back page-cover';
+            back.className = 'page back page-cover-back';
             back.innerHTML = '<img src="radhakrishna.png" alt="Radha Krishna" style="max-width: 80%; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.8);">';
         }
 
@@ -171,8 +173,8 @@ function initBook() {
     // Interactive 360-Degree Rotation & Zoom Logic
     let isDragging = false;
     let dragStartX = 0, dragStartY = 0;
-    let currentRotX = 10;
-    let currentRotY = -15; // Set an initial isometric-like angle
+    let currentRotX = 5;
+    let currentRotY = 0; // Face-on — no side tilt so back cover doesn't peek through
     let currentScale = 1;
 
     if (bookTransform) {
@@ -190,8 +192,8 @@ function initBook() {
         const dx = e.clientX - dragStartX;
         const dy = e.clientY - dragStartY;
 
-        currentRotY += dx * 0.5;
-        currentRotX -= dy * 0.5;
+        currentRotY += dx * 0.4;
+        currentRotX -= dy * 0.4;
 
         dragStartX = e.clientX;
         dragStartY = e.clientY;
@@ -212,6 +214,18 @@ function initBook() {
             currentScale = Math.min(Math.max(0.4, currentScale), 3.5);
             bookTransform.style.transform = `scale(${currentScale}) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
         }, { passive: false });
+
+        let zoomToggled = false;
+        bookContainer.addEventListener('dblclick', () => {
+            if (!bookTransform) return;
+            zoomToggled = !zoomToggled;
+            currentScale = zoomToggled ? 2.5 : 1;
+            bookTransform.style.transform = `scale(${currentScale}) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+            bookTransform.style.transition = 'transform 0.3s ease';
+            setTimeout(() => {
+                bookTransform.style.transition = 'transform 0.1s linear';
+            }, 300);
+        });
     }
 
     function updateBookPosition() {
