@@ -885,6 +885,12 @@
 
   <script>
     // ── DOM References ──────────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.body.classList.add("loaded");
+      }, 1000);
+    });
+
     const proposalCard = document.getElementById('proposal-card');
     const celebrationScreen = document.getElementById('celebration-screen');
     const btnYes = document.getElementById('btn-yes');
@@ -1469,8 +1475,16 @@ I LOVE YOU MY WIFE ❤️ `
         if (currentLeaf >= numLeaves) return;
         const { leaf, zFlipped, i } = leaves[currentLeaf];
         leaf.classList.add('flipped');
-        leaf.style.zIndex = i + 1;
+        
+        // Use a high z-index during transition to keep the flipping page on top,
+        // then set the correct final z-index.
+        leaf.style.zIndex = 100; 
         leaf.style.transform = `translateZ(${zFlipped}px) rotateY(-180deg)`;
+        
+        setTimeout(() => {
+          leaf.style.zIndex = i + 1;
+        }, 600); // Wait for half the transition time
+
         currentLeaf++;
         updateBookPosition();
         hideHint();
@@ -1479,8 +1493,15 @@ I LOVE YOU MY WIFE ❤️ `
         if (currentLeaf <= 0) return;
         const { leaf, zClosed, i } = leaves[currentLeaf - 1];
         leaf.classList.remove('flipped');
-        leaf.style.zIndex = numLeaves - i;
+        
+        // High z-index during turn-back too
+        leaf.style.zIndex = 100;
         leaf.style.transform = `translateZ(${zClosed}px) rotateY(0deg)`;
+        
+        setTimeout(() => {
+          leaf.style.zIndex = numLeaves - i;
+        }, 600);
+
         currentLeaf--;
         updateBookPosition();
         hideHint();
